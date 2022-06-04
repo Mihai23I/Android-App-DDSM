@@ -1,6 +1,7 @@
 package com.mi23.ddsmappmci.ui.notebook;
 
 import Model.MessageNotebook;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -16,8 +17,11 @@ import io.realm.RealmChangeListener;
 import io.realm.RealmConfiguration;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -37,6 +41,7 @@ public class NotebookFragment extends Fragment {
     RecyclerView recycleNotebook;
 //    ListView listNotebook;
     CustomHelper helper;
+    SearchView actionSearch;
     RealmChangeListener realmChangeListener;
 
     public static NotebookFragment newInstance() {
@@ -60,8 +65,13 @@ public class NotebookFragment extends Fragment {
         View view = inflater.inflate(R.layout.notebook_fragment, container, false);
         btnSave = view.findViewById(R.id.btnSave);
         editMessage = view.findViewById(R.id.editMessage);
+        editMessage.clearFocus();
 //        listNotebook = view.findViewById(R.id.listNotebook);
         recycleNotebook = view.findViewById(R.id.recycleNotebook);
+        actionSearch = view.findViewById(R.id.actionSearch);
+        actionSearch.clearFocus();
+        actionSearch.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,8 +87,25 @@ public class NotebookFragment extends Fragment {
 //        listNotebook.setAdapter(adapter);
 
         CustomRecycleAdapter adapter = new CustomRecycleAdapter(getActivity(), helper.justRefresh());
-        recycleNotebook.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+
+        recycleNotebook.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycleNotebook.setAdapter(adapter);
+
+        actionSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                CustomRecycleAdapter adapter = new CustomRecycleAdapter(getActivity(), helper.justRefresh(newText));
+
+                recycleNotebook.setLayoutManager(new LinearLayoutManager(getActivity()));
+                recycleNotebook.setAdapter(adapter);
+                return false;
+            }
+        });
 
         Refresh();
 
