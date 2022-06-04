@@ -8,7 +8,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmConfiguration;
 
 import android.view.LayoutInflater;
@@ -16,8 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.mi23.ddsmappmci.CustomAdapter.CustomAdapter;
+import com.mi23.ddsmappmci.CustomHelper.CustomHelper;
 import com.mi23.ddsmappmci.R;
 
 public class NotebookFragment extends Fragment {
@@ -26,6 +31,10 @@ public class NotebookFragment extends Fragment {
     Button btnSave;
     EditText editMessage;
     Realm realm;
+//    RecyclerView recycleNotebook;
+    ListView listNotebook;
+    CustomHelper helper;
+    RealmChangeListener realmChangeListener;
 
     public static NotebookFragment newInstance() {
         return new NotebookFragment();
@@ -48,8 +57,7 @@ public class NotebookFragment extends Fragment {
         View view = inflater.inflate(R.layout.notebook_fragment, container, false);
         btnSave = view.findViewById(R.id.btnSave);
         editMessage = view.findViewById(R.id.editMessage);
-
-
+        listNotebook = view.findViewById(R.id.listNotebook);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +66,13 @@ public class NotebookFragment extends Fragment {
             }
         });
 
+        helper = new CustomHelper(realm);
+        helper.selectFromDB();
 
+        CustomAdapter adapter = new CustomAdapter(getActivity(), helper.justRefresh());
+        listNotebook.setAdapter(adapter);
+
+        Refresh();
 
         return view;
     }
@@ -87,6 +101,26 @@ public class NotebookFragment extends Fragment {
         });
     }
 
+    private void Refresh(){
+
+        realmChangeListener = new RealmChangeListener(){
+            @Override
+            public void onChange(Object o){
+                CustomAdapter adapter;
+                adapter = new CustomAdapter(getActivity(), helper.justRefresh());
+                listNotebook.setAdapter(adapter);
+
+            }
+        };
+        realm.addChangeListener(realmChangeListener);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        realm.removeChangeListener(realmChangeListener);
+        realm.close();
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
