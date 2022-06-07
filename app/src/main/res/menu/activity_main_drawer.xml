@@ -33,6 +33,20 @@
         </menu>
     </item>
 
+    <item android:title="Animations">
+        <menu>
+            <item
+                android:id="@+id/nav_object_animator"
+                android:icon="@drawable/ic_baseline_call_missed_24"
+                android:title="Object Animator" />
+
+            <item
+                android:id="@+id/nav_motion_layout"
+                android:icon="@drawable/ic_baseline_call_missed_outgoing_24"
+                android:title="Motion Layout" />
+        </menu>
+    </item>
+
     <item android:title="Special Actions">
         <menu>
             <item

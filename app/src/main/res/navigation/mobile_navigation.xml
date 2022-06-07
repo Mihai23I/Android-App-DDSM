@@ -40,4 +40,16 @@
         android:name="com.mi23.ddsmappmci.ui.sharesheet.SharesheetFragment"
         android:label="Sharesheet"
         tools:layout="@layout/sharesheet_fragment" />
+
+    <fragment
+        android:id="@+id/nav_object_animator"
+        android:name="com.mi23.ddsmappmci.ui.objectanimator.ObjectAnimatorFragment"
+        android:label="Object Animator"
+        tools:layout="@layout/object_animator_fragment" />
+
+    <fragment
+        android:id="@+id/nav_motion_layout"
+        android:name="com.mi23.ddsmappmci.ui.motionlayout.MotionLayoutFragment"
+        android:label="MotionLayout"
+        tools:layout="@layout/motion_layout_fragment" />
 </navigation>
