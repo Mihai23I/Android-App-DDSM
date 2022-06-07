@@ -65,7 +65,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:autofillHints=""
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            android:maxLines="3" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleNotebook"
