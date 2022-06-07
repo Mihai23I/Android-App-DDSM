@@ -2,15 +2,10 @@ package com.mi23.ddsmappmci;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.Menu;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.identity.BeginSignInRequest;
-import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -18,23 +13,22 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-
-import androidx.annotation.Nullable;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.mi23.ddsmappmci.databinding.ActivityMainBinding;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private String user_email;
     private String user_name;
+    TextView text_acc_username;
+    TextView text_acc_email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +58,17 @@ public class MainActivity extends AppCompatActivity {
 
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
         firebaseAuth = FirebaseAuth.getInstance();
+
+        NavigationView navigationView_texts = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView_texts.getHeaderView(0);
+        text_acc_username = (TextView)headerView.findViewById(R.id.acc_username);
+        text_acc_email = (TextView)headerView.findViewById(R.id.acc_email);
+
+
         if (user_email == null){
             googleSignInClient.revokeAccess();
+            text_acc_username.setText("Not Signed in");
+            text_acc_email.setText("no email to show");
         }
 
         setSupportActionBar(binding.appBarMain.toolbar);
@@ -80,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "User is signed out", Toast.LENGTH_SHORT).show();
                     user_email = null;
                     user_name = null;
+                    text_acc_username.setText("Not Signed in");
+                    text_acc_email.setText("no email to show");
                     googleSignInClient.revokeAccess();
                 }
 
@@ -145,7 +152,8 @@ public class MainActivity extends AppCompatActivity {
                         String uid = firebaseUser.getUid();
                         user_email = firebaseUser.getEmail();
                         user_name = firebaseUser.getDisplayName();
-
+                        text_acc_username.setText(user_name);
+                        text_acc_email.setText(user_email);
                         Toast.makeText(MainActivity.this, "Logged into " + user_email, Toast.LENGTH_SHORT).show();
                     }
                 });
