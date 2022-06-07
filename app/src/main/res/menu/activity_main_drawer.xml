@@ -12,6 +12,11 @@
             android:id="@+id/nav_notebook"
             android:icon="@drawable/ic_baseline_book_24"
             android:title="@string/menu_notebook" />
+
+        <item
+            android:id="@+id/nav_camera"
+            android:icon="@drawable/ic_baseline_photo_camera_24"
+            android:title="Camera" />
     </group>
 
     <item android:title="Second section with actions">

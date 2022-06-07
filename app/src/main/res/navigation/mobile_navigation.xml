@@ -18,6 +18,12 @@
         tools:layout="@layout/notebook_fragment" />
 
     <fragment
+        android:id="@+id/nav_camera"
+        android:name="com.mi23.ddsmappmci.ui.camera.CameraFragment"
+        android:label="@string/menu_notebook"
+        tools:layout="@layout/camera_fragment" />
+
+    <fragment
         android:id="@+id/nav_sharesheet"
         android:name="com.mi23.ddsmappmci.ui.sharesheet.SharesheetFragment"
         android:label="@string/menu_notebook"
