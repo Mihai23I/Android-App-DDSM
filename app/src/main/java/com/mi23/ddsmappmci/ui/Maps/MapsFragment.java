@@ -73,7 +73,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback{
 
         LatLng Unibuc = new LatLng(44.435601, 26.100917);
         googleMap.addMarker(new MarkerOptions().position(Unibuc).title("Unibuc"));
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(44.427500, 26.087500)).title("Palatul Parlamentului"));
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(44.427500, 26.087500)).title("Draggable marker - Palatul Parlamentului").draggable(true));
 
         googleMap.addCircle(new CircleOptions().center(Unibuc).radius(100));
 

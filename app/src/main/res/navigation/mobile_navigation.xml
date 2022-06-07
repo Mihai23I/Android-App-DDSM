@@ -30,6 +30,12 @@
         tools:layout="@layout/maps_fragment" />
 
     <fragment
+        android:id="@+id/nav_youtube"
+        android:name="com.mi23.ddsmappmci.ui.youtube.YoutubeFragment"
+        android:label="Youtube"
+        tools:layout="@layout/sharesheet_fragment" />
+
+    <fragment
         android:id="@+id/nav_sharesheet"
         android:name="com.mi23.ddsmappmci.ui.sharesheet.SharesheetFragment"
         android:label="Sharesheet"
