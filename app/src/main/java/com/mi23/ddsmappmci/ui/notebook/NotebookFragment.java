@@ -113,27 +113,32 @@ public class NotebookFragment extends Fragment {
     }
 
     private void saveData(){
-        realm.executeTransactionAsync(new Realm.Transaction() {
-            @Override
-            public void execute(Realm bgRealm) {
-                Number maxId = bgRealm.where(MessageNotebook.class).max("message_id");
+        if (editMessage.getLineCount() < 4) {
+            realm.executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm bgRealm) {
+                    Number maxId = bgRealm.where(MessageNotebook.class).max("message_id");
 
-                int newKey = (maxId == null) ? 1 : maxId.intValue()+1;
+                    int newKey = (maxId == null) ? 1 : maxId.intValue() + 1;
 
-                MessageNotebook message = bgRealm.createObject(MessageNotebook.class, newKey);
-                message.setMessage(editMessage.getText().toString());
-            }
-        }, new Realm.Transaction.OnSuccess() {
-            @Override
-            public void onSuccess() {
-                Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
-            }
-        }, new Realm.Transaction.OnError() {
-            @Override
-            public void onError(Throwable error) {
-                Toast.makeText(getActivity(), "Fail", Toast.LENGTH_LONG).show();
-            }
-        });
+                    MessageNotebook message = bgRealm.createObject(MessageNotebook.class, newKey);
+                    message.setMessage(editMessage.getText().toString());
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
+                }
+            }, new Realm.Transaction.OnError() {
+                @Override
+                public void onError(Throwable error) {
+                    Toast.makeText(getActivity(), "Fail", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+        else{
+            Toast.makeText(getActivity(), "Too many new rows added.", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void Refresh(){
